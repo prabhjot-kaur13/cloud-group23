@@ -1,0 +1,27 @@
+<h1 class="display-4">Jobs</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Job Name</th>
+            <!-- <th>Part ID</th>
+            <th>Quantity</th> -->
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% jobs.forEach(function(job){ %>
+            <tr>
+                <td><%= job.id %></td>
+                <!-- <td><%= job.partId %></td>
+                <td><%= job.qty %></td> -->
+                <td>
+                    <a href="#" class="btn btn-primary">View Details</a>
+                    <!-- <a href="/api383/jobs/edit/<%= job.id %>/<%= job.partId %>" class="btn btn-primary">View Details</a> -->
+                    <!-- <form class="d-inline" action="/api383/jobs/delete/<%= job.JobName%>/<%= job.PartId%>" method="post">
+                        <input type="submit" value="Delete" class="btn btn-danger">
+                    </form> -->
+                </td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>
