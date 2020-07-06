@@ -52,10 +52,12 @@ module.exports = {
       return res.status(400).send(err.message);
     });
     if(job === undefined){
-      res.view('pages/order', {message: 'Invalid Credentials'});
+      res.status(404).send('Invalid Credentials');
+      // res.view('pages/order', {message: 'Invalid Credentials'});
     }
     else{
-      res.view('pages/order', {message: 'Order Successful'});
+      res.status(200).send('Valid Credentials');
+      // res.view('pages/order', {message: 'Order Successful'});
     }
   },
   // validate: function(req, res) {
