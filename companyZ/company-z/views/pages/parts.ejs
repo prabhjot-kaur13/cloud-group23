@@ -1,0 +1,15 @@
+<h1 class="display-4"><%= jobName %></h1>
+<table class="table table-hover">
+    <tbody>
+        <thead>
+            <th>Part Name</th>
+            <th>Part Quantity</th>
+        </thead>
+        <% parts.forEach(function(part, index){ %>
+            <tr>
+                <td><%= part.partName %></td>
+                <td><%= part.qoh %></td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

@@ -21,6 +21,7 @@ module.exports.routes = {
 
   '/': { view: 'pages/homepage' },
   'GET /jobs/list': 'JobsController.list',
+  'GET /jobs/:jobName': 'JobsController.parts',
 
 
   /***************************************************************************
