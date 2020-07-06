@@ -45,4 +45,26 @@ module.exports = {
       {"partid":384,"partName":"printer","qoh":20}];
     res.view('pages/parts', {parts: data, jobName: jobName});
   },
+
+  validate: async function (req, res) {
+    var job = await Users.findOne({id:req.body.username, password:req.body.password}).intercept((err)=>{
+      err.message = 'Uh oh: '+err.message;
+      return res.status(400).send(err.message);
+    });
+    if(job === undefined){
+      res.view('pages/order', {message: 'Invalid Credentials'});
+    }
+    else{
+      res.view('pages/order', {message: 'Order Successful'});
+    }
+  },
+  // validate: function(req, res) {
+  //   var user = Users.findOne({id:req.body.username, password:req.body.password});
+  //   if(user === undefined){
+  //     res.status(404).send('Invalid User');
+  //   }
+  //   else{
+  //     res.status(200).send(user);
+  //   }
+  // },
 };
