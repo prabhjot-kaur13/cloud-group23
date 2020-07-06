@@ -10,7 +10,6 @@ module.exports = {
   attributes: {
     updatedAt: false,
     createdAt: false,
-    tableName: 'users',
     id: {
       type: 'string',
       columnName: 'user',
@@ -21,6 +20,6 @@ module.exports = {
       required: true
     }
   },
-  datastores: 'users',
+  datastores: 'default',
 };
 

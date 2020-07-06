@@ -11,7 +11,6 @@ module.exports = {
 
     updatedAt: false,
     createdAt: false,
-    tableName: 'jobparts',
     jobName: {
       type: 'string', required: true
     },
@@ -31,5 +30,5 @@ module.exports = {
       type: 'string', required: true
     }
   },
-  datastores: 'jobparts',
+  datastores: 'default',
 };
