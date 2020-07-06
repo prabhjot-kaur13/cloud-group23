@@ -1,0 +1,31 @@
+<style>
+    table, th, td {
+        padding: 10px;
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+<body>
+    <h1>Go, get your data! </h1><br>
+    <table>
+        <thread>
+            <tr>
+                <th>Job ID </th>
+                <th>Part ID </th>
+                <th>Quantity </th>
+            </tr>
+        </thread>
+        <tbody><% jobs735.forEach(function(job735){ %><tr>
+            <td><%= job735.id %> </td>
+            <td><%= job735.partId %> </td>
+            <td><%= job735.qty %> </td>
+            </tr><% }) %>
+        </tbody>
+    </table>
+</body><br>
+<form action="/">
+    <button>Home </button>
+</form><br>
+<form action="/addData">
+    <button>Add Data </button>
+</form>
