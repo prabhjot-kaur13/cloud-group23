@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-
+  datastore: 'default',
   attributes: {
 
     updatedAt: false,
@@ -21,6 +21,5 @@ module.exports = {
       type: 'string', required: true,
     }
   },
-  datastores: 'default',
 };
 

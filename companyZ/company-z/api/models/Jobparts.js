@@ -6,9 +6,8 @@
  */
 
 module.exports = {
-
+  datastore: 'default',
   attributes: {
-
     updatedAt: false,
     createdAt: false,
     jobName: {
@@ -30,5 +29,4 @@ module.exports = {
       type: 'string', required: true
     }
   },
-  datastores: 'default',
 };
