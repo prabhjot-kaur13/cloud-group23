@@ -28,7 +28,7 @@ module.exports = {
       required: true,
     },
     userId: {
-      type: "number",
+      type: "String",
       required: true,
     },
     qty: {
