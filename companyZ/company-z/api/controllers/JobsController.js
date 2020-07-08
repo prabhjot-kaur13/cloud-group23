@@ -19,13 +19,13 @@ module.exports = {
     // .catch(error => {
     //     console.log(error);
     // });
-    let data = [{"id":"job383","partId":383,"qty":33},
-      {"id":"job383","partId":384,"qty":35},
-      {"id":"job541","partId":541,"qty":55},
-      {"id":"job691","partId":691,"qty":66},
-      {"id":"job705","partId":705,"qty":78},
-      {"id":"job735","partId":735,"qty":77},
-      {"id":"job930","partId":930,"qty":99}];
+    let data = [{'id':'job383','partId':383,'qty':33},
+      {'id':'job383','partId':384,'qty':35},
+      {'id':'job541','partId':541,'qty':55},
+      {'id':'job691','partId':691,'qty':66},
+      {'id':'job705','partId':705,'qty':78},
+      {'id':'job735','partId':735,'qty':77},
+      {'id':'job930','partId':930,'qty':99}];
     res.view('pages/list', {jobs: data});
   },
 
@@ -41,8 +41,8 @@ module.exports = {
     // .catch(error => {
     //     console.log(error);
     // });
-    let data = [{"partid":383,"partName":"mouse","qoh":30},
-      {"partid":384,"partName":"printer","qoh":20}];
+    let data = [{'partid':383,'partName':'mouse','qoh':30},
+      {'partid':384,'partName':'printer','qoh':20}];
     res.view('pages/parts', {parts: data, jobName: jobName});
   },
 
@@ -60,13 +60,9 @@ module.exports = {
       // res.view('pages/order', {message: 'Order Successful'});
     }
   },
-  // validate: function(req, res) {
-  //   var user = Users.findOne({id:req.body.username, password:req.body.password});
-  //   if(user === undefined){
-  //     res.status(404).send('Invalid User');
-  //   }
-  //   else{
-  //     res.status(200).send(user);
-  //   }
-  // },
+
+  finalpage: async function (req, res) {
+    res.status(200).send('Final Page');
+  },
+
 };
