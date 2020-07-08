@@ -70,6 +70,19 @@ module.exports = {
     let username = req.body.username;
     let postData = JSON.parse(req.body.parts);
     let partOrders = [];
+
+    let existingOrders = await Jobparts.find({
+        jobName: postData.jobName,
+        userId: username,
+        result: true
+    }).intercept((err) => {
+        err.message = 'Uh oh: '+err.message;
+        return res.status(400).send(err.message);
+    });
+    console.log(existingOrders);
+    if (existingOrders.length > 0) {
+        return res.status(400).send("Due to high demand, we are only allowing ordering of one job per user.");
+    }
     
     let orderSuccess = postData.tableData.every(element => element.qoh >= element.qty);
 
