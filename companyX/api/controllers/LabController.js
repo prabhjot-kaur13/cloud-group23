@@ -77,28 +77,28 @@ module.exports = {
         }
     },
     createPartOrder: async function(req, res) {
-        if (req.body && req.body.jobName && req.body.userId && req.body.partId && req.body.qty) {
-            const userid = req.body.userId;
-            const jobName =req.body.jobName;
-            const partid = parseInt(req.body.partId);
-            const qty = parseInt(req.body.qty);
-            let jobInfo = await partModel.findOne({id: userid, partId: partid,jobName:jobName});
-            console.log(jobName + " "+ partid);
-            console.log (`jobinfo:${jobInfo}`);
-            if(!jobInfo) {
-              await partModel.create({
-                id: userid,
-                jobName:jobName,
-                partId: partid,
-                qty
-            });
-              res.send(`New job with userId: ${userid} jobName:${jobName} and partId:${partid} created successfully`);
-            } else {
-              res.status (404).send(`Job with given jobId:${jobName}  and partId:${partid} already exists`);
+        partOrderArray = [];
+        req.body.forEach(async element => {
+            const userid = element.userId;
+            const jobName = element.jobName;
+            const partid = parseInt(element.partId);
+            const qty = parseInt(element.qty);
+            if (element.jobName && element.userId && element.partId && element.qty) {
+                let jobInfo = await partModel.findOne({id: userid, partId: partid,jobName:jobName});
+                if(!jobInfo) {
+                    await partModel.create({
+                        id: userid,
+                        jobName:jobName,
+                        partId: partid,
+                        qty
+                    });
+                    console.log(partOrderArray);
+                } else {
+                    res.status(404).send(`Part orders not added as it exists already!!`);
+                }
             }
-        } else {
-            res.status(404).send(`Parameters missing in request body!`);
-        }
+        });
+        res.send('Parts added successfully!!')
     },
     updateJob: async function(req, res) {
         if (req.body && req.body.jobId && req.body.partId && req.body.qty) {
