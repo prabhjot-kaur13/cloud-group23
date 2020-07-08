@@ -1,14 +1,22 @@
 <script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
 <script type="text/javascript">
-    function postThing(){
+    function postThing() {
         io.socket.post('/jobs/validate', {username: document.getElementById("username").value, password:document.getElementById("password").value}, function responseFromServer (body, response) {
             // console.log("The server responded with status " + response.statusCode + " and said: ", body);
             if (response.statusCode == 200 ){
                 createData();
                 document.getElementById("myForm").submit();
             }
-            else{
-
+            else if (body === 'Invalid Credentials') {
+                $('#exampleModal').modal('toggle');
+                if ($('.msg-alert').html() === "") {
+                    $('.msg-alert').append(`<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Invalid credentials!</strong> Please try again.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>`);
+                }
             } 
         });
     }
@@ -30,14 +38,14 @@
         console.log(dataToPass);
         $('#table-data').val(JSON.stringify(dataToPass));
     }
-
-    function validateOrder() {
-
-        io.socket.post('/jobs/validateOrder', )
+    
+    function dismissAlert() {
+        $('.alert').alert('close');
     }
   </script>
 
 <h1 class="display-4" id="job-name"><%= jobName %></h1>
+<div class="msg-alert"></div>
 <table class="table table-hover">
     <thead>
         <tr>
@@ -58,7 +66,7 @@
         <% } %>
     </tbody>
 </table>
-<button type="button" onclick="" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Place Order</button>
+<button type="button" onclick="dismissAlert();" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Place Order</button>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
