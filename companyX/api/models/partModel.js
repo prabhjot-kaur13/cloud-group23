@@ -4,7 +4,7 @@ module.exports = {
         updatedAt: false,
         autoPK: false,
         id:{
-            type: 'integer',
+            type: 'string',
             required: true,
             unique: true,
             columnName: 'userId',

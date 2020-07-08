@@ -78,7 +78,7 @@ module.exports = {
     },
     createPartOrder: async function(req, res) {
         if (req.body && req.body.jobName && req.body.userId && req.body.partId && req.body.qty) {
-            const userid = parseInt(req.body.userId);
+            const userid = req.body.userId;
             const jobName =req.body.jobName;
             const partid = parseInt(req.body.partId);
             const qty = parseInt(req.body.qty);
@@ -169,5 +169,25 @@ module.exports = {
             partExists = false;   
             res.status (404).send(`Part with partId:${partid} does not exist!`); 
           });  
+    },
+deleteJob: async function(req, res){
+    if (req.body && req.body.jobId && req.body.partId ) {
+      const jobid = req.body.jobId;
+      const partid = req.body.partId;
+      let jobInfo = await jobsModel.findOne({id: jobid, partId: partid});
+      
+          if(jobInfo) {
+            await jobsModel.destroy({
+                id: jobid, partId: partid
+          
+            });
+            res.send(`Quantity with jobId:${jobid} and partId:${partid} deleted successfully!`);
+        } else {
+          res.status (404).send(`Job with given with jobId:${jobid} and partId:${partid} does not exist!`);
+        }
+    } else {
+        res.status(404).send(`Parameters missing in request body!`);
     }
 }
+}
+
