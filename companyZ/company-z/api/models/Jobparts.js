@@ -10,7 +10,11 @@ module.exports = {
   attributes: {
     updatedAt: false,
     createdAt: false,
+
     jobName: {
+      type: 'string', required: true
+    },
+    userId: {
       type: 'string', required: true
     },
     partId: {

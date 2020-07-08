@@ -24,7 +24,8 @@ module.exports.routes = {
   'GET /jobs/job/:jobName': 'JobsController.parts',
   'POST /jobs/validate': 'JobsController.validate',
   'POST /jobs/search': 'SearchController.search',
-  'POST /jobs/finalpage': 'JobsController.finalpage',
+  'POST /jobs/validateOrder': 'JobsController.validateOrder',
+
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *
