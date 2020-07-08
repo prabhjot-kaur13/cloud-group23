@@ -23,6 +23,7 @@ module.exports.routes = {
   'GET /jobs/list': 'JobsController.list',
   'GET /jobs/job/:jobName': 'JobsController.parts',
   'POST /jobs/validate': 'JobsController.validate',
+  'POST /jobs/validateOrder': 'JobsController.validateOrder',
 
   /***************************************************************************
   *                                                                          *

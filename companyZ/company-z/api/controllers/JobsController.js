@@ -41,9 +41,12 @@ module.exports = {
     // .catch(error => {
     //     console.log(error);
     // });
-    let data = [{"partid":383,"partName":"mouse","qoh":30},
-      {"partid":384,"partName":"printer","qoh":20}];
-    res.view('pages/parts', {parts: data, jobName: jobName});
+    let jobDetails = [{"id":"job383","partId":383,"qty":33},
+        {"id":"job383","partId":384,"qty":35}]
+    let partDetails = [{"partid":383,"partName":"mouse","qoh":38},
+        {"partid":384,"partName":"printer","qoh":40}];
+
+    res.view('pages/parts', {parts: partDetails, jobDetails: jobDetails, jobName: jobName});
   },
 
   validate: async function (req, res) {
@@ -60,13 +63,41 @@ module.exports = {
       // res.view('pages/order', {message: 'Order Successful'});
     }
   },
-  // validate: function(req, res) {
-  //   var user = Users.findOne({id:req.body.username, password:req.body.password});
-  //   if(user === undefined){
-  //     res.status(404).send('Invalid User');
-  //   }
-  //   else{
-  //     res.status(200).send(user);
-  //   }
-  // },
+
+  validateOrder: async function (req, res) {
+      console.log(req.body);
+    let username = req.body.username;
+    let postData = JSON.parse(req.body.parts);
+    let partOrders = [];
+    
+    let orderSuccess = postData.tableData.every(element => element.qoh >= element.qty);
+
+    let datetime = new Date().toISOString();
+    postData.tableData.forEach(element => {
+        partOrders.push({
+            jobName: postData.jobName,
+            userId: username,
+            partId: parseInt(element.partId),
+            qty: parseInt(element.qty),
+            date: datetime.slice(0,10),
+            time: datetime.slice(11,19),
+            result: orderSuccess
+        });
+    });
+
+    let orders = await Jobparts.createEach(partOrders).fetch().intercept((err) => {
+        err.message = 'Uh oh: '+err.message;
+        return res.status(400).send(err.message);
+    });
+
+    console.log("order rows: " + orders.length);
+
+    if (orderSuccess === true) {
+        res.view('pages/order', {message: 'Order Successful'});
+        // res.status(200).send("Order Placed Successfully!");
+    } else {
+        // res.view('pages/order', {message: 'Sorry, order could not be placed due to unavailability of parts'});
+        res.status(400).send("Sorry, order could not be placed due to unavailability of parts");
+    }
+  }
 };
