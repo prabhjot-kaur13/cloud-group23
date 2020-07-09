@@ -121,21 +121,31 @@ module.exports = {
     return false;
   },
 
-  updatePartOrders541: function (req541, res541) {
-    Orders.query(
-      "Insert into PartOrders Values ($1, $2, $3, $4)",
-      [
-        req541.body.partId,
-        req541.body.jobName,
-        req541.body.userId,
-        req541.body.qty,
-      ],
-      (err, PartOrders) => {
-        if (err) {
-          res541.send(500, { error: "Database Error" });
+  updatePartOrders541: async function (req541, res541) {
+    // var myOrders = [];
+    let errorFlag = false;
+    var orders = req541.body.orders;
+    for (var i = 0; i < orders.length; i++) {
+      Orders.query(
+        "Insert into PartOrders Values ($1, $2, $3, $4)",
+        [
+          orders[i].partId,
+          orders[i].jobName,
+          orders[i].userId,
+          orders[i].qty,
+          // myOrders,
+        ],
+        (err, PartOrders) => {
+          if (err) {
+            errorFlag = true;
+          }
         }
-        res541.send("Entry has been successfully added");
-      }
-    );
+      );
+    }
+    if (errorFlag) {
+      res541.send("Error in adding entries");
+    } else {
+      res541.send("Entries have been added successfully");
+    }
   },
 };
