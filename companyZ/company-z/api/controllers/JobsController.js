@@ -43,9 +43,9 @@ module.exports = {
     // });
 
     let jobDetails = [{"id":"job383","partId":383,"qty":33},
-      {"id":"job383","partId":384,"qty":35}]
+      {"id":"job383","partId":384,"qty":35}];
     let partDetails = [{"partid":383,"partName":"mouse","qoh":38},
-      {"partid":384,"partName":"printer","qoh":40}];
+      {"partid":384,"partName":"printer","qoh":30}];
 
     res.view('pages/parts', {parts: partDetails, jobDetails: jobDetails, jobName: jobName});
   },
@@ -81,7 +81,11 @@ module.exports = {
     });
     console.log(existingOrders);
     if (existingOrders.length > 0) {
-        return res.status(400).send("Due to high demand, we are only allowing ordering of one job per user.");
+        // return res.status(400).send("Due to high demand, we are only allowing ordering of one job per user.");
+        return res.view('pages/order', {
+          result: 'failure',
+          message: 'Due to high demand, we are only allowing ordering of one job per user'
+        });
     }
     
     let orderSuccess = postData.tableData.every(element => element.qoh >= element.qty);
@@ -107,11 +111,45 @@ module.exports = {
     console.log("order rows: " + orders.length);
 
     if (orderSuccess === true) {
-      res.view('pages/order', {message: 'Order Successful'});
+      console.log({partOrders});
+
+      //Inform company X about the successful order
+      // axios.post('http://companyx-env.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/createPartsOrder', partOrders)
+      //   .then(response => {
+      //     console.log("=================Company X success begin===================");
+      //     console.log(response);
+      //     console.log("=================Company X success end===================");
+      //   })
+      //   .catch(error => {
+      //     console.log("=================Company X failed begin===================");
+      //     console.log(error);
+      //     console.log("=================Company X failed end===================");
+      //   });
+
+        //Inform company Y about the successful order
+        // axios.post('http://129.173.67.223:3000/parts541/updatePartOrders', {orders: partOrders})
+        // .then(response => {
+        //   console.log("=================Company Y success begin===================");
+        //   console.log(response);
+        //   console.log("=================Company Y success end===================");
+        // })
+        // .catch(error => {
+        //   console.log("=================Company Y failed begin===================");
+        //   console.log(error);
+        //   console.log("=================Company Y failed end===================");
+        // });
+
+      res.view('pages/order', {
+        result: 'success',
+        message: 'Order Placed Successfully!'
+      });
       // res.status(200).send("Order Placed Successfully!");
     } else {
-      // res.view('pages/order', {message: 'Sorry, order could not be placed due to unavailability of parts'});
-      res.status(400).send("Sorry, order could not be placed due to unavailability of parts");
+      res.view('pages/order', {
+        result: 'failure',
+        message: 'Sorry, order could not be placed due to unavailability of parts :('
+      });
+      // res.status(400).send("Sorry, order could not be placed due to unavailability of parts");
     }
   }
 };
