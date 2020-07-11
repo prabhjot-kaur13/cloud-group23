@@ -119,6 +119,37 @@ module.exports = {
             res.status(404).send(`Parameters missing in request body!`);
         }
     },
+
+  editJob: async function (req, res) {
+    const jobid = req.params.jobid;
+    const partid = parseInt(req.params.partId);
+      let jobsinfo=await jobsModel.find({id:jobid,partId:partid});
+      if(jobsinfo){
+          res.view("pages/edit",{id:jobid,partId:partid});
+      } else {
+        res.send('job not found');
+      }
+  },
+
+
+  updateData: async function (req, res) {
+    const jobid = req.params.jobid;
+    const partid = parseInt(req.params.partId);
+    const qty=parseInt(req.body.qty);
+    let jobsinfo=await jobsModel.findOne({id:jobid,partId:partid});
+     if(jobsinfo){
+      await jobsModel.update({id: jobid, partId: partid}).set({
+            qty:qty
+        });
+        let jobs735 = await jobsModel.find();
+        res.view("pages/viewData", {jobs735:jobs735});
+    }
+    else {
+        res.send('job not found');
+      }
+  
+},
+
     viewData: async function(req, res) {
         let jobs735 = await jobsModel.find();
         if(!jobs735) {
