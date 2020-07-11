@@ -140,6 +140,24 @@ module.exports = {
         res.send('job not found');
       }
   },
+  deleteData: async function (req, res) {
+    const jobid = req.params.jobId;
+    const partid = req.params.partId;
+    let jobInfo = await jobsModel.findOne({id: jobid, partId: partid});
+    
+        if(jobInfo) {
+          await jobsModel.destroy({
+              id: jobid, partId: partid
+        
+          });
+          let jobs735 = await jobsModel.find();
+          res.view("pages/viewData", {jobs735:jobs735});
+      }
+      else {
+          res.send('job not found');
+        }
+  },
+
 
 
   updateData: async function (req, res) {

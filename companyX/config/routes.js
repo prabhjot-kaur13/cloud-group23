@@ -10,6 +10,7 @@ module.exports.routes= {
   "POST /API735/createPartsOrder":"LabController.createPartOrder",
   "POST /editJob/:jobid/:partId": "LabController.editJob",
   "POST /updateData/:jobid/:partId": "LabController.updateData",
+  "POST /deleteData/:jobId/:partId": "LabController.deleteData",
 
 
   "PUT /API735/updateJob":"LabController.updateJob",
