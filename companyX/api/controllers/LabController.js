@@ -35,6 +35,16 @@ module.exports = {
             res.send(jobInfo);
         }
     },
+    searchOrders: async function(req, res){
+        const jobid = req.body.jobId;
+        let ordersInfo = await partModel.find({jobName: jobid});        
+        if(ordersInfo.length == 0){
+            res.send(`Orders with given jobName:${jobid} not found...`);
+        }
+        else {
+            res.view("pages/ordersInfo",{ordersInfo});
+        }
+    },
     createJob: async function(req, res) {
         if (req.body && req.body.jobId && req.body.partId && req.body.qty) {
             const jobid = req.body.jobId;

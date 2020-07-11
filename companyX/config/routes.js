@@ -10,5 +10,7 @@ module.exports.routes= {
   "PUT /API735/updateJob":"LabController.updateJob",
   "GET /viewData":"LabController.viewData",
   "GET /addData":{ view:"pages/addData"},
+  "GET /searchJob":{ view:"pages/searchJob"},
+  "POST /searchOrders":"LabController.searchOrders",
   "POST /addData":"LabController.addData"
 };

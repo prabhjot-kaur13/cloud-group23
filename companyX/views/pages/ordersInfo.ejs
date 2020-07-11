@@ -6,19 +6,21 @@
     }
 </style>
 <body>
-    <h1>Jobs Info</h1><br>
+    <h1>Orders Info</h1><br>
     <table>
         <thread>
             <tr>
-                <th>Job Name </th>
+                <th>User ID </th>
+                <th>Job ID </th>
                 <th>Part ID </th>
                 <th>Quantity </th>
             </tr>
         </thread>
-        <tbody><% jobs735.forEach(function(job735){ %><tr>
-            <td><%= job735.id %> </td>
-            <td><%= job735.partId %> </td>
-            <td><%= job735.qty %> </td>
+        <tbody><% ordersInfo.forEach(function(order){ %><tr>
+            <td><%= order.id %> </td>
+            <td><%= order.jobName %> </td>
+            <td><%= order.partId %> </td>
+            <td><%= order.qty %> </td>
             </tr><% }) %>
         </tbody>
     </table>
