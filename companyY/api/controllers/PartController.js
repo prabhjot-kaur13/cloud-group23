@@ -23,6 +23,10 @@ module.exports = {
     res541.view("find");
   },
 
+  searchorder705: function (req705,res705) {
+	res705.view("search");
+  },
+
   findAPart541: function (req541, res541) {
     Parts.query(
       "Select * from Parts where partId=$1",
@@ -35,6 +39,18 @@ module.exports = {
       }
     );
   },
+
+  listorders705: function(req705,res705){
+	Parts.query("select * from PartOrders where jobName=$1 order by $1 ASC, $2 ASC, $3 ASC",
+	[req705.body.Part.jobName,req705.body.Part.userId,req705.body.Part.partId],
+	(err, Orders705, fields) => {
+	if(err) {
+	res705.send(500, {error: "Database Error" });
+       }
+       res705.view("displayOrders", {Orders: Orders705.rows});
+}
+);
+},
 
   partExists541: function (req541, res541) {
     Parts.query(
@@ -122,11 +138,17 @@ module.exports = {
   },
 
   updatePartOrders541: async function (req541, res541) {
-    // var myOrders = [];
     let errorFlag = false;
     var orders = req541.body.orders;
     for (var i = 0; i < orders.length; i++) {
-      Orders.query(
+     	
+	Parts.query("update Parts set qoh = qoh - $1  where partId = $2" , [orders[i].qty,orders[i].partId] , (err,PartsUpdated) => {
+                if(err){
+                errorFlag = true;
+               }
+           });
+
+	 Orders.query(
         "Insert into PartOrders Values ($1, $2, $3, $4)",
         [
           orders[i].partId,
@@ -141,11 +163,22 @@ module.exports = {
           }
         }
       );
-    }
+}	
     if (errorFlag) {
       res541.send("Error in adding entries");
     } else {
       res541.send("Entries have been added successfully");
     }
   },
+
+	viewParts705: function(req705,res705){
+                Parts.query("select * from Parts where partId IN($1)",[req705.body.partId] , (err, partinfo705, fields) => {
+                        if(err){
+                                console.log(err);
+                                res705.send(err);
+                        }
+                        res705.json(partinfo705.rows);
+                })
+        }
+
 };

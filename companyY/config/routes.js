@@ -29,7 +29,9 @@ module.exports.routes = {
   "/parts541/editPart/:partId": "PartController.editPart541",
   "/parts541/updatePart/:partId": "PartController.updatePart541",
   "/parts541/updatePartOrders": "PartController.updatePartOrders541",
-
+  "POST /viewParts" : 'PartController.viewParts705',
+  "/orders705/searchorder" : "PartController.searchorder705",
+  "/orders705/fetchorders" : "PartController.listorders705",
   /***************************************************************************
    *                                                                          *
    * More custom routes here...                                               *
