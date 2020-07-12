@@ -110,11 +110,11 @@ module.exports = {
         // return res.status(400).send("Due to high demand, we are only allowing ordering of one job per user.");
         return res.view('pages/order', {
           result: 'failure',
-          message: 'Due to high demand, we are only allowing ordering of one job per user'
+          message: 'Due to high demand, we are allowing ordering of only one job per user'
         });
     }
     
-    let orderSuccess = postData.tableData.every(element => element.qoh >= element.qty);
+    let orderSuccess = postData.tableData.every(element => parseInt(element.qoh) >= parseInt(element.qty));
 
     let datetime = new Date().toISOString();
     postData.tableData.forEach(element => {
