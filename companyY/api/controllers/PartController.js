@@ -5,6 +5,8 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
+const { Sails } = require("sails");
+
 module.exports = {
   getParts541: function (req541, res541) {
     Parts.query("select * from Parts", (err, Parts, fields) => {
@@ -23,8 +25,8 @@ module.exports = {
     res541.view("find");
   },
 
-  searchorder705: function (req705,res705) {
-	res705.view("search");
+  searchorder705: function (req705, res705) {
+    res705.view("search");
   },
 
   findAPart541: function (req541, res541) {
@@ -35,22 +37,43 @@ module.exports = {
         if (err) {
           res541.send(500, { error: "Database Error" });
         }
-        res541.view("uniquePart", { Part: Part541.rows });
+        if (Part541.rows != "") {
+          res541.view("uniquePart", { Part: Part541.rows });
+        } else {
+          res541.status(404).send({
+            success: false,
+            message: "Part with given ID not found in database.",
+          });
+        }
       }
     );
   },
 
-  listorders705: function(req705,res705){
-	Parts.query("select * from PartOrders where jobName=$1 order by $1 ASC, $2 ASC, $3 ASC",
-	[req705.body.Part.jobName,req705.body.Part.userId,req705.body.Part.partId],
-	(err, Orders705, fields) => {
-	if(err) {
-	res705.send(500, {error: "Database Error" });
-       }
-       res705.view("displayOrders", {Orders: Orders705.rows});
-}
-);
-},
+  listorders705: function (req705, res705) {
+    Parts.query(
+      "select * from PartOrders where jobName=$1 order by $1 ASC, $2 ASC, $3 ASC",
+      [
+        req705.body.Part.jobName,
+        req705.body.Part.userId,
+        req705.body.Part.partId,
+      ],
+      (err, Orders705, fields) => {
+        if (err) {
+          res705.send(500, { error: "Database Error" });
+        }
+        if (Orders705.rows != "") {
+          res705.view("displayOrders", { Orders: Orders705.rows });
+        } else {
+          res705
+            .status(404)
+            .send({
+              success: false,
+              message: "No order found for given ID in database",
+            });
+        }
+      }
+    );
+  },
 
   partExists541: function (req541, res541) {
     Parts.query(
@@ -117,7 +140,16 @@ module.exports = {
         if (err) {
           res541.send(500, { error: "Database Error" });
         }
-        res541.view("edit", { Part: Part541.rows });
+        if (Part541.rows != "") {
+          res541.view("edit", { Part: Part541.rows });
+        } else {
+          res541
+            .status(404)
+            .send({
+              sucess: false,
+              mesasge: "Parts with given PartID does not exist in database",
+            });
+        }
       }
     );
     return false;
@@ -141,14 +173,17 @@ module.exports = {
     let errorFlag = false;
     var orders = req541.body.orders;
     for (var i = 0; i < orders.length; i++) {
-     	
-	Parts.query("update Parts set qoh = qoh - $1  where partId = $2" , [orders[i].qty,orders[i].partId] , (err,PartsUpdated) => {
-                if(err){
-                errorFlag = true;
-               }
-           });
+      Parts.query(
+        "update Parts set qoh = qoh - $1  where partId = $2",
+        [orders[i].qty, orders[i].partId],
+        (err, PartsUpdated) => {
+          if (err) {
+            errorFlag = true;
+          }
+        }
+      );
 
-	 Orders.query(
+      Orders.query(
         "Insert into PartOrders Values ($1, $2, $3, $4)",
         [
           orders[i].partId,
@@ -163,7 +198,7 @@ module.exports = {
           }
         }
       );
-}	
+    }
     if (errorFlag) {
       res541.send("Error in adding entries");
     } else {
@@ -171,14 +206,17 @@ module.exports = {
     }
   },
 
-	viewParts705: function(req705,res705){
-                Parts.query("select * from Parts where partId IN($1)",[req705.body.partId] , (err, partinfo705, fields) => {
-                        if(err){
-                                console.log(err);
-                                res705.send(err);
-                        }
-                        res705.json(partinfo705.rows);
-                })
+  viewParts705: function (req705, res705) {
+    Parts.query(
+      "select * from Parts where partId IN($1)",
+      [req705.body.partId],
+      (err, partinfo705, fields) => {
+        if (err) {
+          console.log(err);
+          res705.send(err);
         }
-
+        res705.json(partinfo705.rows);
+      }
+    );
+  },
 };
