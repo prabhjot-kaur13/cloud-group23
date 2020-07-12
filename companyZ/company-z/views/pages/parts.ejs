@@ -28,7 +28,8 @@
                 "partId": $(tr).find('td:eq(0)').text(),
                 "partName": $(tr).find('td:eq(1)').text(),
                 "qty": $(tr).find('td:eq(2)').text(),
-                "qoh": $(tr).find('td:eq(3)').text(),
+                // "qoh": $(tr).find('td:eq(3)').text(),
+                "qoh": $(tr).find('input:hidden').val(),
             }
         });
         tableData.shift();
@@ -52,16 +53,18 @@
             <th>Part ID</th>
             <th>Part Name</th>
             <th>Required Quantity</th>
-            <th>Available Quantity</th>
+            <!-- <th>Available Quantity</th> -->
+            <input type="hidden" value="Available Quantity" />
         </tr>
     </thead>
     <tbody>
         <% for(let i = 0; i < parts.length; i++) { %>
             <tr>
-                <td><%= parts[i].partid %></td>
+                <td><%= parts[i].partId %></td>
                 <td><%= parts[i].partName %></td>
                 <td><%= jobDetails[i].qty %></td>
-                <td><%= parts[i].qoh %></td>
+                <!-- <td><%= parts[i].qoh %></td> -->
+                <input type="hidden" value="<%= parts[i].qoh %>" />
             </tr>
         <% } %>
     </tbody>
