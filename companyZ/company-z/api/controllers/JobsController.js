@@ -12,15 +12,15 @@ module.exports = {
   list: function(req, res) {
     axios.get('http://companyx-env.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/getJobs')
     .then(response => {
-        // console.log(response);
-        res.view('pages/list', {jobs: response.data})
+      // console.log(response);
+      res.view('pages/list', {jobs: response.data})
     })
     .catch(error => {
-        console.log(error);
-        res.view('pages/order', {
-          result: 'failure',
-          message: 'Error in fetching jobs'
-        });
+      console.log(error);
+      res.view('pages/order', {
+        result: 'failure',
+        message: 'Error in fetching jobs'
+      });
     });
     // let data = [{'id':'job383','partId':383,'qty':33},
     //   {'id':'job383','partId':384,'qty':35},
@@ -37,15 +37,15 @@ module.exports = {
 
     axios.get('http://companyx-env.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/getJobByJobName/' + jobName)
     .then(response => {
-        let partIds = [];
-        response.data.forEach(part => {
-          partIds.push(parseInt(part.partId))
-        });
+      let partIds = [];
+      response.data.forEach(part => {
+        partIds.push(parseInt(part.partId))
+      });
 
-        let parts = {partId: partIds};
-        let jobDetails = response.data;
+      let parts = {partId: partIds};
+      let jobDetails = response.data;
 
-        axios.post('http://129.173.67.218:1337/viewParts', parts)
+      axios.post('http://129.173.67.223:3000/viewParts', parts)
           .then(response => {
             let partDetails = response.data;
             res.view('pages/parts', {parts: partDetails, jobDetails: jobDetails, jobName: jobName});
@@ -57,13 +57,13 @@ module.exports = {
               message: 'Error in fetching parts'
             });
           });
-        })
+    })
     .catch(error => {
-        console.log(error);
-        res.view('pages/order', {
-          result: 'failure',
-          message: 'Job not found'
-        });
+      console.log(error);
+      res.view('pages/order', {
+        result: 'failure',
+        message: 'Job not found'
+      });
     });
  
     // let parts = {"partId": [383, 384]};
@@ -98,20 +98,20 @@ module.exports = {
     let partOrders = [];
 
     let existingOrders = await Jobparts.find({
-        jobName: postData.jobName,
-        userId: username,
-        result: true
+      jobName: postData.jobName,
+      userId: username,
+      result: true
     }).intercept((err) => {
-        err.message = 'Uh oh: '+err.message;
-        return res.status(400).send(err.message);
+      err.message = 'Uh oh: '+err.message;
+      return res.status(400).send(err.message);
     });
     console.log(existingOrders);
     if (existingOrders.length > 0) {
-        // return res.status(400).send("Due to high demand, we are only allowing ordering of one job per user.");
-        return res.view('pages/order', {
-          result: 'failure',
-          message: 'Due to high demand, we are only allowing ordering of one job per user'
-        });
+      // return res.status(400).send("Due to high demand, we are only allowing ordering of one job per user.");
+      return res.view('pages/order', {
+        result: 'failure',
+        message: 'Due to high demand, we are only allowing ordering of one job per user'
+      });
     }
     
     let orderSuccess = postData.tableData.every(element => element.qoh >= element.qty);
@@ -152,8 +152,8 @@ module.exports = {
           console.log("=================Company X failed end===================");
         });
 
-        //Inform company Y about the successful order
-        axios.post('http://129.173.67.218:1337/parts541/updatePartOrders', {orders: partOrders})
+      //Inform company Y about the successful order
+      axios.post('http://129.173.67.223:3000/parts541/updatePartOrders', {orders: partOrders})
         .then(response => {
           console.log("=================Company Y success begin===================");
           console.log(response);
