@@ -1,0 +1,33 @@
+<style>
+    table, th, td {
+        padding: 10px;
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+<body>
+    <h1 class="display-4">Orders Info</h1><br>
+    <table>
+        <thread>
+            <tr>
+                <th>Job Name </th>
+                <th>User ID</th>
+                <th>Part ID </th>
+                <th>Quantity </th>
+            </tr>
+        </thread>
+        <tbody><% ordersInfo.forEach(function(order){ %><tr>
+            <td><%= order.jobName%> </td>
+            <td><%= order.id%> </td>
+            <td><%= order.partId %> </td>
+            <td><%= order.qty %> </td>
+            </tr><% }) %>
+        </tbody>
+    </table>
+</body><br>
+<form action="/">
+    <button class="btn btn-light">Home </button>
+</form><br>
+<form action="/searchJob">
+    <button class="btn btn-light">Search Orders</button>
+</form>
