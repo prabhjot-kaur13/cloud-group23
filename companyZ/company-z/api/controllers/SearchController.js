@@ -11,7 +11,7 @@ module.exports = {
   search: async function (req, res) {
     var job = req.body.jobName;
     let datetime = new Date().toISOString();
-    axios.get('http://companyx-env.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/getJobByJobName/'+job)
+    axios.get('http://companyx-env-2.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/getJobByJobName/'+job)
     .then(response => {
       Search.create({jobName: job, date: datetime.slice(0,10), time: datetime.slice(11, 19)}).exec((err) => {
         if (err) {
