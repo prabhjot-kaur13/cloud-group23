@@ -10,7 +10,7 @@ const axios = require('axios');
 module.exports = {
 
   list: function(req, res) {
-    axios.get('http://companyx-env.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/getJobs')
+    axios.get('http://companyx-env-2.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/getJobs')
     .then(response => {
       // console.log(response);
       res.view('pages/list', {jobs: response.data})
@@ -35,7 +35,7 @@ module.exports = {
   parts: function(req, res) {
     let jobName = req.params.jobName;
 
-    axios.get('http://companyx-env.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/getJobByJobName/' + jobName)
+    axios.get('http://companyx-env-2.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/getJobByJobName/' + jobName)
     .then(response => {
       let partIds = [];
       response.data.forEach(part => {
@@ -140,7 +140,7 @@ module.exports = {
       console.log({partOrders});
 
       //Inform company X about the successful order
-      axios.post('http://companyx-env.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/createPartsOrder', partOrders)
+      axios.post('http://companyx-env-2.eba-c2pbkmaf.us-east-1.elasticbeanstalk.com/API735/createPartsOrder', partOrders)
         .then(response => {
           console.log("=================Company X success begin===================");
           console.log(response);
