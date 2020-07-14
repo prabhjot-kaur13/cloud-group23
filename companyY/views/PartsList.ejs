@@ -1,0 +1,49 @@
+<style>
+  table, th, td {
+    padding: 10px;
+    border: 1px solid black; 
+    border-collapse: collapse;
+  }
+</style>
+
+
+<h1 class="display-4">Parts</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>PartID</th>
+      <th>Part Name</th>
+      <th>Quantity on Hand</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% for(var i=0; i <Parts.length; i++ ){ %>
+    <tr>
+      <td><%= Parts[i]['partId'] %></td>
+      <td><%= Parts[i]['partName']%></td>
+      <td><%= Parts[i]['qoh'] %></td>
+      <td>
+        <div>
+        <form
+          class="d-inline"
+          action="/Parts541/editPart/<%= Parts[i].partId %>"
+          method="POST"
+        >
+          <input type="submit" value="Update" class="btn btn-primary" />
+        </form>
+      </td>
+        <!-- <form
+          class="d-inline"
+          action="/Parts541/deletePart/<%= Parts[i].jobName %>/<%= Parts[i].partId %>"
+          method="POST"
+        > -->
+          <!-- <input type="submit" value="Delete" class="btn btn-danger" /> -->
+        <!-- </form> -->
+    </div>
+
+    </tr>
+    <% } %>
+  </tbody>
+</table>
